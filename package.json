@@ -1,0 +1,30 @@
+{
+  "name": "ednt-plugin-ping",
+  "version": "0.0.1",
+  "private": true,
+  },
+  "author": "Philipp Geschke <electricdynamite.apps@gmail.com>",
+  "description": "Ping plugin for modular Looking Glass software Electric Dynamite Network Tools",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ElectricDynamite/ednt-plugin-ping.git"
+  },
+  "bugs": {
+    "url" : "http://github.com/ElectricDynamite/ednt-plugin-ping/issues",
+    "email" : "electricdynamite.apps@gmail.com"
+  },
+  "keywords": [
+    "ednt",
+    "electricdynamite",
+    "looking glass",
+    "traceroute",
+    "bgp",
+    "ping"
+  ],
+  "dependencies": {
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.8"
+  }
+}
