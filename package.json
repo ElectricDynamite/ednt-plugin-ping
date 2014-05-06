@@ -2,7 +2,6 @@
   "name": "ednt-plugin-ping",
   "version": "0.0.1",
   "private": true,
-  },
   "author": "Philipp Geschke <electricdynamite.apps@gmail.com>",
   "description": "Ping plugin for modular Looking Glass software Electric Dynamite Network Tools",
   "repository": {
@@ -22,6 +21,7 @@
     "ping"
   ],
   "dependencies": {
+    "net-ping": "1.1.x"
   },
   "license": "MIT",
   "engines": {
