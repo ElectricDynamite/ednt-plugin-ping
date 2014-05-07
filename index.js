@@ -38,7 +38,7 @@ exports.init = function(options) {
 
 exports.newRequest = function(req, res, callback) {
   target = req.query['target'];
-  if(target === undefined) callback(null,'This would return the partial view \
+  if(target === undefined || target === '') callback(null,'This would return the partial view \
 to query the params, I guess');
   this.session.pingHost (target, function (error, target, sent, rcvd) {
     var ms = rcvd - sent;
