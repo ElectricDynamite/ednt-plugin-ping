@@ -1,11 +1,17 @@
 
-exports.NAME = "ednt-plugin-ping";
-exports.FRIENDLY_NAME = "ping";
-exports.VERSION = "0.0.1";
-exports.MOUNTPOINT = "ping";
-exports.SU_REQUIRED = true;
 
-exports.ROUTES = {
+var ping = require('net-ping');
+var events = require('events');
+var Plugin = function() {};
+Plugin.prototype = new events.EventEmitter;
+
+Plugin.prototype.NAME = "ednt-plugin-ping";
+Plugin.prototype.FRIENDLY_NAME = "ping";
+Plugin.prototype.VERSION = "0.0.1";
+Plugin.prototype.MOUNTPOINT = "ping";
+Plugin.prototype.SU_REQUIRED = true;
+
+Plugin.prototype.ROUTES = {
   "/": {
     "method": "GET",
     "params": {
@@ -24,10 +30,7 @@ exports.ROUTES = {
 };
 
 
-var ping = require('net-ping');
-
-
-exports.init = function(options) {
+Plugin.prototype.init = function(options) {
   this.session = ping.createSession();
   this.session.on('error', function(e) {
     console.log('session error');
@@ -36,26 +39,31 @@ exports.init = function(options) {
   return true;
 }
 
-exports.newRequest = function(req, res, callback) {
+Plugin.prototype.newRequest = function(req) {
+  var self = this;
   target = req.query['target'];
+  count = req.query['count'] || 5;
   if(target === undefined || target === '') callback(null,'This would return the partial view \
 to query the params, I guess');
   this.session.pingHost (target, function (error, target, sent, rcvd) {
     var ms = rcvd - sent;
     if (error)
         result = target + ": " + error.toString ();
-    else
+     else
         result = target + ": Alive (ms=" + ms + ")";
-    callback(null, result);
+    //callback(null, result);
+    self.emit('output', null, result);
+    self.emit('end', null);
   });
 }
 
-exports.cancelRequest = function(requestId) {
+Plugin.prototype.cancelRequest = function(requestId) {
   
 }
 
-exports.getView = function(viewName) {
+Plugin.getView = function(viewName) {
   viewName = viewName || "default";
 }
 
+module.exports = new Plugin();
 
