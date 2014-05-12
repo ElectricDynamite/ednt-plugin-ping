@@ -2,6 +2,7 @@
 
 var ping = require('net-ping');
 var events = require('events');
+var _ = require('underscore');
 var Plugin = function() {};
 Plugin.prototype = new events.EventEmitter;
 
@@ -20,7 +21,12 @@ Plugin.prototype.ROUTES = {
         "type": "String"
       },
       "count": {
-        "type": "Integer"
+        "type": "Integer",
+        "default": 5
+      },
+      "interval": {
+        "type": "Integer",
+        "default": 1000
       },
       "timeout": {
         "type": "Integer"
@@ -39,21 +45,46 @@ Plugin.prototype.init = function(options) {
   return true;
 }
 
-Plugin.prototype.newRequest = function(req) {
+Plugin.prototype.newRequest = function(params) {
   var self = this;
-  target = req.query['target'];
-  count = req.query['count'] || 5;
-  if(target === undefined || target === '') callback(null,'This would return the partial view \
+  params['count'] = params['count'] || this.ROUTES['/'].params.count.default;
+  params['interval'] = params['interval'] || this.ROUTES['/'].params.interval.default;
+  console.log(params['count']); 
+  if(params['target'] === undefined || params['target'] === '') {
+    self.emit('output', null,'This would return the partial view \
 to query the params, I guess');
-  this.session.pingHost (target, function (error, target, sent, rcvd) {
+    self.emit('end');
+  }
+  var count = params['count'];
+  self.emit('output', null, 'test');
+  
+  self.ping(params, count, function(err) {
+    self.emit('end', null);
+  });
+}
+
+Plugin.prototype.ping = function(params, i, callback) {
+  var self = this;
+  var delay = (i === params['count']) ? 0 : params['interval'];
+  var nextCallback = _.bind(self.ping, this);
+  var nextPing = _.bind(self.executePing, this);
+  i--;
+  if(i < 0) callback();
+  else setTimeout(nextPing, delay, params, i, callback, nextCallback);
+}
+
+Plugin.prototype.executePing = function(params, i, finalCallback, callback) {
+  var self = this;
+  this.session.pingHost (params['target'], function (err, target, sent, rcvd) {
     var ms = rcvd - sent;
-    if (error)
-        result = target + ": " + error.toString ();
+    if (err)
+        result = target + ": " + err.toString ();
      else
         result = target + ": Alive (ms=" + ms + ")";
     //callback(null, result);
+    //console.log(result);
     self.emit('output', null, result);
-    self.emit('end', null);
+    callback(params, i, finalCallback);
   });
 }
 
