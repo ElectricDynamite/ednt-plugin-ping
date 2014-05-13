@@ -51,7 +51,6 @@ Plugin.prototype.newRequest = function(params) {
   var self = this;
   params['count'] = params['count'] || this.ROUTES['/'].params.count.default;
   params['interval'] = params['interval'] || this.ROUTES['/'].params.interval.default;
-  console.log(params['count']); 
   if(params['target'] === undefined || params['target'] === '') {
     self.emit('output', null, self.getView());
     self.emit('end');
