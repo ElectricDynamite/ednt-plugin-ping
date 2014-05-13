@@ -3,6 +3,8 @@
 var ping = require('net-ping');
 var events = require('events');
 var _ = require('underscore');
+var ejs = require('ejs');
+var fs = require('fs');
 var Plugin = function() {};
 Plugin.prototype = new events.EventEmitter;
 
@@ -51,8 +53,7 @@ Plugin.prototype.newRequest = function(params) {
   params['interval'] = params['interval'] || this.ROUTES['/'].params.interval.default;
   console.log(params['count']); 
   if(params['target'] === undefined || params['target'] === '') {
-    self.emit('output', null,'This would return the partial view \
-to query the params, I guess');
+    self.emit('output', null, self.getView());
     self.emit('end');
   }
   var count = params['count'];
@@ -92,8 +93,13 @@ Plugin.prototype.cancelRequest = function(requestId) {
   
 }
 
-Plugin.getView = function(viewName) {
+Plugin.prototype.getView = function(viewName) {
   viewName = viewName || "default";
+  switch(viewName) {
+    case "default":
+      return ejs.render(fs.readFileSync(__dirname+'/views/index.ejs', 'utf8'), null);
+      break;
+  }
 }
 
 module.exports = new Plugin();

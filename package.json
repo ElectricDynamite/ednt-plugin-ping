@@ -22,7 +22,8 @@
   ],
   "dependencies": {
     "net-ping": "1.1.x",
-    "underscore": "1.6.x"
+    "underscore": "1.6.x",
+    "ejs": "1.0.x"
   },
   "license": "MIT",
   "engines": {
