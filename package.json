@@ -9,8 +9,8 @@
     "url": "https://github.com/ElectricDynamite/ednt-plugin-ping.git"
   },
   "bugs": {
-    "url" : "http://github.com/ElectricDynamite/ednt-plugin-ping/issues",
-    "email" : "electricdynamite.apps@gmail.com"
+    "url": "http://github.com/ElectricDynamite/ednt-plugin-ping/issues",
+    "email": "electricdynamite.apps@gmail.com"
   },
   "keywords": [
     "ednt",
@@ -21,9 +21,9 @@
     "ping"
   ],
   "dependencies": {
+    "ejs": "^3.1.9",
     "net-ping": "1.1.x",
-    "underscore": "1.6.x",
-    "ejs": "1.0.x"
+    "underscore": "^1.13.6"
   },
   "license": "MIT",
   "engines": {
